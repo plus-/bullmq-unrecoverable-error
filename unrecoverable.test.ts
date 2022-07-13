@@ -134,3 +134,14 @@ it("should not retry unrecoverable-error in sandboxed processor", async () => {
   await queueScheduler.close();
   await queue.close();
 });
+
+it("cannot propagate instanceof UnrecoverableError", () => {
+  const error1 = new UnrecoverableError("error1");
+
+  expect(error1 instanceof UnrecoverableError).toBeTruthy();
+
+  const error2 = new Error();
+  Object.assign(error2, error1);
+
+  expect(error2 instanceof UnrecoverableError).toBeFalsy();
+});
